@@ -36,7 +36,7 @@ namespace JobPortal.Controllers
             var application = await _applicationsRepository.Get(id);
             if (application == null) return NotFound($"Application with id '{id}' not found");
 
-            return Ok(_mapper.Map<OfferDto>(application));
+            return Ok(_mapper.Map<ApplicationDto>(application));
         }
 
         [HttpPost]
