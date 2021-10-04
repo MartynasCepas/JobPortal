@@ -1,4 +1,7 @@
-﻿namespace JobPortal.Data.Dtos.Topics
+﻿using System.Collections.Generic;
+using JobPortal.Data.Entities;
+
+namespace JobPortal.Data.Dtos.Topics
 {
-    public record OfferDto(int Id,  string Name, string Description);
+    public record OfferDto(int Id,  string Name, string Description, List<Application> Applications);
 }

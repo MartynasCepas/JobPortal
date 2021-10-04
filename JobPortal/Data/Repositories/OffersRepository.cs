@@ -24,7 +24,30 @@ namespace JobPortal.Data.Repositories
                 {
                     Name = "name",
                     Description = "description",
-                    CreationTimeUtc = DateTime.UtcNow
+                    CreationTimeUtc = DateTime.UtcNow,
+                    Applications = new List<Application>()
+                    {
+                        new Application()
+                        {
+                            ApplicantName = "application1",
+                            Description = "desc1",
+                            Response = new Response()
+                            {
+                                Message = "message",
+                                Status = "status"
+                            }
+                        },
+                        new Application()
+                        {
+                            ApplicantName = "application2",
+                            Description = "desc2",
+                            Response = new Response()
+                            {
+                                Message = "message",
+                                Status = "status"
+                            }
+                        }
+                    }
                 },
                  new Offer()
                 {

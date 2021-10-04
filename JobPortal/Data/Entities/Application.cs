@@ -11,6 +11,7 @@ namespace JobPortal.Data.Entities
         public string ApplicantName { get; set; }
         public string Description { get; set; }
 
+        public Response Response { get; set; }
         public DateTime CreationTimeUtc { get; set; }
     }
 }
