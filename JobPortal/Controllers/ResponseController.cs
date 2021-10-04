@@ -47,7 +47,7 @@ namespace JobPortal.Controllers
 
             // 201
             // Created offer
-            return Created($"/api/responses/{response.Id}", _mapper.Map<Offer>(response));
+            return Created($"/api/responses/{response.Id}", _mapper.Map<Response>(response));
         }
 
         [HttpPut("{id}")]
