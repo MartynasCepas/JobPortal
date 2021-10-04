@@ -16,14 +16,12 @@ namespace JobPortal.Data
             CreateMap<UpdateOfferDto, Offer>();
 
             CreateMap<Response, ResponseDto>();
-            CreateMap<ResponseDto, Response>();
-            CreateMap<Response, CreateOfferDto>();
-            CreateMap<Response, UpdateOfferDto>();
+            CreateMap<CreateResposeDto, Response>();
+            CreateMap<UpdateResponseDto, Response>();
 
             CreateMap<Application, ApplicationDto>();
-            CreateMap<ApplicationDto, Application>();
-            CreateMap<Application, CreateApplicationDto>();
-            CreateMap<Application, UpdateApplicationDto>();
+            CreateMap<CreateApplicationDto, Application>();
+            CreateMap<UpdateApplicationDto, Application>();
         }
     }
 }

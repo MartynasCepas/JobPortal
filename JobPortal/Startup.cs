@@ -34,6 +34,8 @@ namespace JobPortal
             services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
             services.AddTransient<IOffersRepository, OffersRepository>();
+            services.AddTransient<IApplicationsRepository, ApplicationsRepository>();
+            services.AddTransient<IResponsesRepository, ResponsesRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
