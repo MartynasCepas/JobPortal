@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JobPortal.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]/")]
     public class ApplicationsController : ControllerBase
     {
         private readonly IApplicationsRepository _applicationsRepository;
@@ -27,13 +27,13 @@ namespace JobPortal.Controllers
         [HttpGet]
         public async Task<IEnumerable<ApplicationDto>> GetAll()
         {
-            return (await _applicationsRepository.GetAll()).Select(o => _mapper.Map<ApplicationDto>(o));
+            return (await _applicationsRepository.GetAllAsync()).Select(o => _mapper.Map<ApplicationDto>(o));
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationDto>> Get(int id)
         {
-            var application = await _applicationsRepository.Get(id);
+            var application = await _applicationsRepository.GetByIdAsync(id);
             if (application == null) return NotFound($"Application with id '{id}' not found");
 
             return Ok(_mapper.Map<ApplicationDto>(application));
@@ -44,7 +44,7 @@ namespace JobPortal.Controllers
         {
             var application = _mapper.Map<Application>(applicationDto);
 
-            await _applicationsRepository.Create(application);
+            await _applicationsRepository.InsertAsync(application);
 
             // 201
             // Created offer
@@ -54,12 +54,12 @@ namespace JobPortal.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ApplicationDto>> Put(int id, UpdateApplicationDto applicationDto)
         {
-            var application = await _applicationsRepository.Get(id);
+            var application = await _applicationsRepository.GetByIdAsync(id);
             if (application == null) return NotFound($"Application with id '{id}' not found");
 
             _mapper.Map(applicationDto, application);
 
-            await _applicationsRepository.Put(application);
+            await _applicationsRepository.UpdateAsync(application);
 
             return Created($"/api/applications/{application.Id}", _mapper.Map<Application>(application));
         }
@@ -67,10 +67,10 @@ namespace JobPortal.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<ApplicationDto>> Delete(int id)
         {
-            var application = await _applicationsRepository.Get(id);
+            var application = await _applicationsRepository.GetByIdAsync(id);
             if (application == null) return NotFound($"Application with id '{id}' not found");
 
-            await _applicationsRepository.Delete(application);
+            await _applicationsRepository.DeleteAsync(application);
 
             // 204
             return NoContent();

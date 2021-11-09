@@ -3,72 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using JobPortal.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobPortal.Data.Repositories
 {
     public interface IApplicationsRepository
     {
-        Task<IEnumerable<Application>> GetAll();
-        Task<Application> Get(int id);
-        Task<Application> Create(Application offer);
-        Task<Application> Put(Application offer);
-        Task Delete(Application offer);
+        Task<IEnumerable<Application>> GetAllAsync();
+        Task<Application> GetByIdAsync(int id);
+        Task InsertAsync(Application offer);
+        Task UpdateAsync(Application offer);
+        Task DeleteAsync(Application offer);
     }
 
     public class ApplicationsRepository : IApplicationsRepository
     {
-        public async Task<IEnumerable<Application>> GetAll()
+        private readonly RestContext _restContext;
+
+        public ApplicationsRepository(RestContext restContext)
         {
-            return new List<Application>
-            {
-                new Application()
-                {
-                    ApplicantName = "name1",
-                    Description = "description",
-                    CreationTimeUtc = DateTime.UtcNow
-                },
-                new Application()
-                {
-                    ApplicantName = "name2",
-                    Description = "description",
-                    CreationTimeUtc = DateTime.UtcNow
-                }
-            };
+            _restContext = restContext;
         }
 
-        public async Task<Application> Get(int id)
+        public async Task<IEnumerable<Application>> GetAllAsync()
         {
-            return new Application()
-            {
-                ApplicantName = "name1",
-                Description = "description",
-                CreationTimeUtc = DateTime.UtcNow
-            };
+            return await _restContext.Applications.ToListAsync();
         }
 
-        public async Task<Application> Create(Application offer)
+        public async Task<Application> GetByIdAsync(int id)
         {
-            return new Application()
-            {
-                ApplicantName = "name1",
-                Description = "description",
-                CreationTimeUtc = DateTime.UtcNow
-            };
+            return await _restContext.Applications.FirstOrDefaultAsync(o => o.Id == id);
         }
 
-        public async Task<Application> Put(Application offer)
+        public async Task InsertAsync(Application application)
         {
-            return new Application()
-            {
-                ApplicantName = "name1",
-                Description = "description",
-                CreationTimeUtc = DateTime.UtcNow
-            };
+            _restContext.Applications.Add(application);
+            await _restContext.SaveChangesAsync();
         }
 
-        public async Task Delete(Application offer)
+        public async Task UpdateAsync(Application application)
         {
+            _restContext.Applications.Update(application);
+            await _restContext.SaveChangesAsync();
+        }
 
+        public async Task DeleteAsync(Application application)
+        {
+            _restContext.Applications.Remove(application);
+            await _restContext.SaveChangesAsync();
         }
     }
 }

@@ -3,5 +3,5 @@ using JobPortal.Data.Entities;
 
 namespace JobPortal.Data.Dtos.Topics
 {
-    public record OfferDto(int Id,  string Name, string Description, List<Application> Applications);
+    public record OfferDto(int Offer_Id,  string Name, string Description);
 }

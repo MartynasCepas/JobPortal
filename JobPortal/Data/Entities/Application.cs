@@ -10,8 +10,8 @@ namespace JobPortal.Data.Entities
         public int Id { get; set; }
         public string ApplicantName { get; set; }
         public string Description { get; set; }
-
-        public Response Response { get; set; }
+        public Offer Offer { get; set; }
+        public int offer_id { get; set; }
         public DateTime CreationTimeUtc { get; set; }
     }
 }

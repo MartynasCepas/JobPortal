@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JobPortal.Data.Dtos.Applications;
+using JobPortal.Data.Dtos.Auth;
 using JobPortal.Data.Dtos.Responses;
 using JobPortal.Data.Dtos.Topics;
 using JobPortal.Data.Entities;
@@ -22,6 +23,8 @@ namespace JobPortal.Data
             CreateMap<Application, ApplicationDto>();
             CreateMap<CreateApplicationDto, Application>();
             CreateMap<UpdateApplicationDto, Application>();
+
+            CreateMap<User, UserDto>();
         }
     }
 }

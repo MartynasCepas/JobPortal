@@ -10,7 +10,7 @@ namespace JobPortal.Data.Entities
         public int Id { get; set; }
         public string Message { get; set; }
         public string Status { get; set; }
-
+        public Application Application { get; set; }
         public DateTime CreationTimeUtc { get; set; }
     }
 }
