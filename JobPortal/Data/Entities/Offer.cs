@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using JobPortal.Auth;
 using JobPortal.Data.Dtos.Auth;
 
 namespace JobPortal.Data.Entities
 {
-    public class Offer
+    public class Offer : IUserOwnedResource
     {
         public int Id {  get; set; }   
         public string Name {  get; set; }

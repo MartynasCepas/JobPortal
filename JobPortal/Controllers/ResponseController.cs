@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using JobPortal.Auth.Model;
 using JobPortal.Data.Dtos.Responses;
 using JobPortal.Data.Entities;
 using JobPortal.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JobPortal.Controllers
@@ -39,6 +41,7 @@ namespace JobPortal.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = RestUserRoles.Recruiter)]
         public async Task<ActionResult<ResponseDto>> Post(CreateResposeDto responseDto)
         {
             var response = _mapper.Map<Response>(responseDto);
@@ -51,6 +54,7 @@ namespace JobPortal.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = RestUserRoles.Recruiter)]
         public async Task<ActionResult<ResponseDto>> Put(int id, UpdateResponseDto responseDto)
         {
             var response = await _responsesRepository.GetByIdAsync(id);
@@ -64,6 +68,7 @@ namespace JobPortal.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = RestUserRoles.Recruiter)]
         public async Task<ActionResult<ResponseDto>> Delete(int id)
         {
             var response = await _responsesRepository.GetByIdAsync(id);

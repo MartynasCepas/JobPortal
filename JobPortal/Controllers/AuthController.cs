@@ -44,7 +44,7 @@ namespace JobPortal.Controllers
 
             var createUserResult = await _userManager.CreateAsync(newUser, registerUserDto.Password);
             if (!createUserResult.Succeeded)
-                return BadRequest("Could not create user");
+                return BadRequest(createUserResult.Errors);
 
             await _userManager.AddToRoleAsync(newUser, RestUserRoles.Recruiter);
 

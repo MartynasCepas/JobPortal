@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Security.Claims;
 using JobPortal.Data.Dtos.Topics;
 using AutoMapper;
 using JobPortal.Auth.Model;
@@ -18,11 +19,13 @@ namespace JobPortal.Controllers
     {
         private readonly IOffersRepository _offerssRepository;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
-        public OffersController(IOffersRepository offersRepository, IMapper mapper)
+        public OffersController(IOffersRepository offersRepository, IMapper mapper, IAuthorizationService authorizationService)
         {
             _offerssRepository = offersRepository;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet]
@@ -44,7 +47,9 @@ namespace JobPortal.Controllers
         [Authorize(Roles = RestUserRoles.Recruiter)]
         public async Task<ActionResult<OfferDto>> Post(CreateOfferDto offerDto)
         {
+            var user = User.FindFirst(CustomClaims.UserId).Value;
             var offer = _mapper.Map<Offer>(offerDto);
+            offer.UserId = user;
 
             await _offerssRepository.InsertAsync(offer);
 
@@ -60,6 +65,13 @@ namespace JobPortal.Controllers
             var offer = await _offerssRepository.GetByIdAsync(id);
             if (offer == null) return NotFound($"Offer with id '{id}' not found");
 
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, offer, PolicyNames.SameUser);
+
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             _mapper.Map(offerDto, offer);
 
             await _offerssRepository.UpdateAsync(offer);
@@ -73,6 +85,13 @@ namespace JobPortal.Controllers
         {
             var offer = await _offerssRepository.GetByIdAsync(id);
             if (offer == null) return NotFound($"Offer with id '{id}' not found");
+
+            var authorizationResult = await _authorizationService.AuthorizeAsync(User, offer, PolicyNames.SameUser);
+
+            if (!authorizationResult.Succeeded)
+            {
+                return Forbid();
+            }
 
             await _offerssRepository.DeleteAsync(offer);
 

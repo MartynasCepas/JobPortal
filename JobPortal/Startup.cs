@@ -13,8 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using System.Text;
 using JobPortal.Auth;
+using JobPortal.Auth.Model;
 using JobPortal.Data.Dtos.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -53,6 +55,13 @@ namespace JobPortal
                     options.TokenValidationParameters.ValidIssuer = _Configuration["JWT:ValidIssuer"];
                     options.TokenValidationParameters.ValidAudience = _Configuration["JWT:ValidAudience"];
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(PolicyNames.SameUser, policy => policy.Requirements.Add(new SameUserRequirement()));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, SameUserAuthorizationHandler>();
 
             services.AddDbContext<RestContext>();
             services.AddAutoMapper(typeof(Startup));
